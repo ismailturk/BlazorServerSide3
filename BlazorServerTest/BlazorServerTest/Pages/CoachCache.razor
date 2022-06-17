@@ -1,0 +1,50 @@
+﻿@page "/cache"
+@using DataAccessLibrary
+
+@using DataAccessLibrary.Models
+@inject CacheCoachData data
+
+<PageTitle>Coach Cache</PageTitle>
+
+<h1>Coach Cache List</h1>
+
+@if (coachs == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Age</th>
+                <th>Nationality</th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach (var coach in coachs)
+           {
+               <tr>
+                   <td>@coach.FirstName</td>
+                   <td>@coach.LastName</td>
+                   <td>@coach.Age</td>
+                   <td>@coach.Nationality</td>
+
+               </tr>
+           }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    List<CoachModel> coachs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        coachs = await data.GetCoachCache();
+    }
+
+}

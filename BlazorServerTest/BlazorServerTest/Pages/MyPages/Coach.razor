@@ -1,0 +1,55 @@
+﻿@page "/Data/Coachs"
+
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+
+@inject ICoachsData db
+
+<AuthorizeView>
+    <Authorized>
+         <h1>Coachs Page</h1>
+
+@if (coach == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Age</th>
+                <th>Nationality</th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach (var coach in coach)
+           {
+               <tr>
+                   <td>@coach.FirstName</td>
+                   <td>@coach.LastName</td>
+                   <td>@coach.Age</td>
+                   <td>@coach.Nationality</td>
+
+               </tr>
+           }
+        </tbody>
+    </table>
+}
+    </Authorized>
+    <NotAuthorized><div>You are not authorized to enter here</div></NotAuthorized>
+   
+</AuthorizeView>
+
+
+@code {
+    private List<CoachModel> coach;
+
+    protected override async Task OnInitializedAsync()
+    {
+        coach = await db.GetCoach();
+    }
+
+}
